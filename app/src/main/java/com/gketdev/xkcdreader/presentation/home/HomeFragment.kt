@@ -1,4 +1,4 @@
-package com.gketdev.xkcdreader.presentation
+package com.gketdev.xkcdreader.presentation.home
 
 import android.os.Bundle
 import android.view.LayoutInflater

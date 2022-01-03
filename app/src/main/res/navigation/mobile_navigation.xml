@@ -6,11 +6,11 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.gketdev.xkcdreader.presentation.HomeFragment" />
+        android:name="com.gketdev.xkcdreader.presentation.home.HomeFragment" />
 
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.gketdev.xkcdreader.presentation.HomeFragment" />
+        android:name="com.gketdev.xkcdreader.presentation.home.HomeFragment" />
 
 
 </navigation>
