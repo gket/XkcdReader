@@ -1,5 +1,7 @@
 package com.gketdev.xkcdreader.data.repository
 
+import com.gketdev.xkcdreader.data.model.XkcdResponse
+
 interface HomeRepository {
-    fun getXkcdItem(): String
+    suspend fun getXkcdItem(): XkcdResponse
 }
