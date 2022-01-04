@@ -1,5 +1,7 @@
 package com.gketdev.xkcdreader.presentation.home
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -83,6 +85,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             val direction =
                 HomeFragmentDirections.actionHomeFragmentToExplanationDialog(item.id, item.title)
             findNavController().navigate(direction)
+        }
+        binding?.imageViewShare?.setOnClickListener {
+            val shareIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_STREAM, Uri.parse(item.image))
+                type = "image/jpeg"
+            }
+            startActivity(Intent.createChooser(shareIntent, null))
         }
     }
 
