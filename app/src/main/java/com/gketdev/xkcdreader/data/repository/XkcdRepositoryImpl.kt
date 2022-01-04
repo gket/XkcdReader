@@ -8,6 +8,7 @@ import com.gketdev.xkcdreader.data.source.RemoteExplanationDataSource
 import com.gketdev.xkcdreader.data.source.RemoteXkcdDataSource
 import com.gketdev.xkcdreader.domain.XkcdRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -36,6 +37,12 @@ class XkcdRepositoryImpl @Inject constructor(
 
     override suspend fun getExplanationItem(id: Int, title: String): ExplanationResponse {
         return remoteExplanationDataSource.getExplanationData(id, title)
+    }
+
+    override suspend fun getFavoriteItems(): Flow<List<XkcdEntity>> = flow {
+        localDataSource.getAllFavoritedItems().collect {
+            emit(it)
+        }
     }
 
 }

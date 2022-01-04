@@ -11,4 +11,5 @@ interface XkcdRepository {
     suspend fun addItemFavorite(item: XkcdEntity)
     suspend fun deleteItemFavorite(id: Int)
     suspend fun getExplanationItem(id: Int, title: String): ExplanationResponse
+    suspend fun getFavoriteItems(): Flow<List<XkcdEntity>>
 }

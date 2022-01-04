@@ -35,7 +35,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         onObserve()
-        onListener()
+        listenClickEvents()
     }
 
     private fun onObserve() {
@@ -71,7 +71,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
 
-    private fun onListener() {
+    private fun listenClickEvents() {
         binding?.imageViewPrev?.setOnClickListener {
             viewModel.getItemDetailById(-1)
         }

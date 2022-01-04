@@ -8,7 +8,7 @@ import com.gketdev.xkcdreader.data.model.XkcdResponse
 import com.gketdev.xkcdreader.domain.AddToFavoriteUseCase
 import com.gketdev.xkcdreader.domain.DeleteToFavoriteUseCase
 import com.gketdev.xkcdreader.domain.GetItemUseCase
-import com.gketdev.xkcdreader.domain.IsItemFavoritedUseCase
+import com.gketdev.xkcdreader.domain.IsItemFavoriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getItemUseCase: GetItemUseCase,
-    private val isItemFavoritedUseCase: IsItemFavoritedUseCase,
+    private val isItemFavoriteUseCase: IsItemFavoriteUseCase,
     private val addToFavoriteUseCase: AddToFavoriteUseCase,
     private val deleteToFavoriteUseCase: DeleteToFavoriteUseCase
 ) : ViewModel() {
@@ -87,7 +87,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun isItemFavorited(id: Int): Boolean {
-        return isItemFavoritedUseCase(id)
+        return isItemFavoriteUseCase(id)
     }
 
     fun favoriteProcess(xkcdItemUiState: XkcdItemUiState) {
