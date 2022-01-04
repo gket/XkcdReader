@@ -10,7 +10,7 @@
 
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.gketdev.xkcdreader.presentation.home.HomeFragment" />
+        android:name="com.gketdev.xkcdreader.presentation.FavoriteFragment" />
 
 
 </navigation>

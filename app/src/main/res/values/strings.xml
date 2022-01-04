@@ -2,4 +2,5 @@
     <string name="app_name">XkcdReader</string>
     <string name="text_home">Home</string>
     <string name="text_favorites">Favorites</string>
+    <string name="text_button_explanation">See Explanation...</string>
 </resources>

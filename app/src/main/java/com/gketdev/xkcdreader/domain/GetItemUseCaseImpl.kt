@@ -10,9 +10,9 @@ import javax.inject.Inject
 
 class GetItemUseCaseImpl @Inject constructor(private val repository: HomeRepository) :
     GetItemUseCase {
-    override suspend fun invoke(): Flow<DataResultState<XkcdResponse>> = flow {
+    override suspend fun invoke(id: Int?): Flow<DataResultState<XkcdResponse>> = flow {
         try {
-            val data = repository.getXkcdItem()
+            val data = repository.getXkcdItem(id)
             emit(DataResultState.Success(data))
         } catch (e: Exception) {
             emit(DataResultState.Error(message = e.message.toString()))

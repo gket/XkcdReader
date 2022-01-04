@@ -6,7 +6,10 @@ import javax.inject.Inject
 
 class HomeRepositoryImpl @Inject constructor(private val remoteDataSource: RemoteDataSource) :
     HomeRepository {
-    override suspend fun getXkcdItem(): XkcdResponse {
-        return remoteDataSource.getLatestItem()
+    override suspend fun getXkcdItem(id: Int?): XkcdResponse {
+        return if (id == null)
+            remoteDataSource.getLatestItem()
+        else
+            remoteDataSource.getItemById(id)
     }
 }

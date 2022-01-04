@@ -13,5 +13,10 @@ class RemoteDataSource @Inject constructor(
         withContext(Dispatchers.IO) {
             xkcdApi.getLatestItem()
         }
+
+    suspend fun getItemById(id:Int): XkcdResponse =
+        withContext(Dispatchers.IO) {
+            xkcdApi.getItemById(id)
+        }
 }
 
