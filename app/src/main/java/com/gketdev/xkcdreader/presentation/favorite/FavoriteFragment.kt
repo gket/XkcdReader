@@ -1,4 +1,4 @@
-package com.gketdev.xkcdreader.presentation
+package com.gketdev.xkcdreader.presentation.favorite
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

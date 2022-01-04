@@ -6,11 +6,28 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.gketdev.xkcdreader.presentation.home.HomeFragment" />
+        android:name="com.gketdev.xkcdreader.presentation.home.HomeFragment">
+        <action
+            android:id="@+id/action_homeFragment_to_explanationDialog"
+            app:destination="@id/explanationDialog" />
+    </fragment>
 
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.gketdev.xkcdreader.presentation.FavoriteFragment" />
+        android:name="com.gketdev.xkcdreader.presentation.favorite.FavoriteFragment" />
 
+    <dialog
+        android:id="@+id/explanationDialog"
+        android:name="com.gketdev.xkcdreader.presentation.detail.DetailFragment">
+
+        <argument
+            android:name="xkcdId"
+            app:argType="integer" />
+
+        <argument
+            android:name="xkcdTitle"
+            app:argType="string" />
+
+    </dialog>
 
 </navigation>

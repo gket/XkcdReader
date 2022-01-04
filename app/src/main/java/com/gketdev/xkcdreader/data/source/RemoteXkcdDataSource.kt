@@ -6,7 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class RemoteDataSource @Inject constructor(
+class RemoteXkcdDataSource @Inject constructor(
     private val xkcdApi: XkcdApi
 ) {
     suspend fun getLatestItem(): XkcdResponse =

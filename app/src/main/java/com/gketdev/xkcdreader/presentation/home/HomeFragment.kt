@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.gketdev.xkcdreader.R
 import com.gketdev.xkcdreader.base.BaseFragment
 import com.gketdev.xkcdreader.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,6 +20,7 @@ import kotlinx.coroutines.flow.collect
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private val viewModel: HomeViewModel by viewModels()
+    private var item = XkcdItemUiState()
 
     override fun initViewBinding(
         inflater: LayoutInflater,
@@ -45,28 +48,41 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         binding?.progressBar?.visibility = View.GONE
                     }
                     it.xkcdItem.id != -1 -> {
-                        val item = it.xkcdItem
+                        item = it.xkcdItem
                         setUiItem(item.image, item.title, item.alt)
                         binding?.progressBar?.visibility = View.GONE
                     }
                 }
 
-                if (it.isLatestItem) {
-                    binding?.imageViewNext?.visibility = View.GONE
-                } else {
-                    binding?.imageViewNext?.visibility = View.VISIBLE
-                }
-            }
+                controlLatestItem(it.isLatestItem)
 
+                controlFavorite(it.isFavorited)
+            }
+        }
+    }
+
+    private fun controlLatestItem(isLatestItem: Boolean) {
+        if (isLatestItem) {
+            binding?.imageViewNext?.visibility = View.GONE
+        } else {
+            binding?.imageViewNext?.visibility = View.VISIBLE
         }
     }
 
     private fun onListener() {
         binding?.imageViewPrev?.setOnClickListener {
-            viewModel.getItemDetailById(false)
+            viewModel.getItemDetailById(-1)
         }
         binding?.imageViewNext?.setOnClickListener {
-            viewModel.getItemDetailById(true)
+            viewModel.getItemDetailById(1)
+        }
+        binding?.imageViewFav?.setOnClickListener {
+            viewModel.favoriteProcess(item)
+        }
+        binding?.textViewSeeDetail?.setOnClickListener {
+            val direction =
+                HomeFragmentDirections.actionHomeFragmentToExplanationDialog(item.id, item.title)
+            findNavController().navigate(direction)
         }
     }
 
@@ -78,6 +94,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
         binding?.textViewTitle?.text = title
         binding?.textViewAlt?.text = alt
+    }
+
+    private fun controlFavorite(isFavorited: Boolean) {
+        if (isFavorited) {
+            binding?.imageViewFav?.setImageResource(R.drawable.ic_favorited)
+        } else {
+            binding?.imageViewFav?.setImageResource(R.drawable.ic_favorite)
+        }
     }
 
 }

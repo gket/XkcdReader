@@ -3,8 +3,12 @@ package com.gketdev.xkcdreader.presentation.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gketdev.xkcdreader.data.model.DataResultState
+import com.gketdev.xkcdreader.data.database.entity.XkcdEntity
 import com.gketdev.xkcdreader.data.model.XkcdResponse
+import com.gketdev.xkcdreader.domain.AddToFavoriteUseCase
+import com.gketdev.xkcdreader.domain.DeleteToFavoriteUseCase
 import com.gketdev.xkcdreader.domain.GetItemUseCase
+import com.gketdev.xkcdreader.domain.IsItemFavoritedUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +19,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getItemUseCase: GetItemUseCase
+    private val getItemUseCase: GetItemUseCase,
+    private val isItemFavoritedUseCase: IsItemFavoritedUseCase,
+    private val addToFavoriteUseCase: AddToFavoriteUseCase,
+    private val deleteToFavoriteUseCase: DeleteToFavoriteUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState(XkcdItemUiState()))
@@ -40,13 +47,15 @@ class HomeViewModel @Inject constructor(
                             _uiState.value = _uiState.value.copy(
                                 xkcdItem = setXkcdItem(item),
                                 isLoading = false,
-                                isLatestItem = true
+                                isLatestItem = true,
+                                isFavorited = isItemFavorited(item.num)
                             )
                         } else {
                             _uiState.value = _uiState.value.copy(
                                 xkcdItem = setXkcdItem(item),
                                 isLoading = false,
-                                isLatestItem = false
+                                isLatestItem = false,
+                                isFavorited = isItemFavorited(item.num)
                             )
                         }
                         lastCollectedNum = item.num
@@ -65,18 +74,40 @@ class HomeViewModel @Inject constructor(
             id = item.num,
             title = item.title,
             image = item.img,
-            alt = item.alt
+            alt = item.alt,
         )
     }
 
-    fun getItemDetailById(isNext: Boolean) {
-        if (isNext) lastCollectedNum += 1
-        else lastCollectedNum -= 1
-
+    fun getItemDetailById(additionNum: Int) {
+        lastCollectedNum += additionNum
         if (lastCollectedNum != latestNum)
             getXkdcItem(lastCollectedNum)
         else
             getXkdcItem(null)
+    }
+
+    private suspend fun isItemFavorited(id: Int): Boolean {
+        return isItemFavoritedUseCase(id)
+    }
+
+    fun favoriteProcess(xkcdItemUiState: XkcdItemUiState) {
+        val isFavorite = _uiState.value.isFavorited
+        viewModelScope.launch {
+            if (!isFavorite) {
+                addToFavoriteUseCase.invoke(
+                    XkcdEntity(
+                        xkcdId = xkcdItemUiState.id,
+                        xkcdItemUiState.title,
+                        xkcdItemUiState.alt,
+                        xkcdItemUiState.image
+                    )
+                )
+                _uiState.value = _uiState.value.copy(isFavorited = true)
+            } else {
+                deleteToFavoriteUseCase.invoke(xkcdItemUiState.id)
+                _uiState.value = _uiState.value.copy(isFavorited = false)
+            }
+        }
     }
 
 }
